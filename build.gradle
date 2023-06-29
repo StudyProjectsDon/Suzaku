@@ -1,0 +1,54 @@
+plugins {
+    id 'java'
+}
+
+group 'suzaku'
+version '1.0'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'com.github.pengrad:java-telegram-bot-api:6.7.0'
+
+    compileOnly 'org.projectlombok:lombok:1.18.28'
+    annotationProcessor 'org.projectlombok:lombok:1.18.28'
+
+    testCompileOnly 'org.projectlombok:lombok:1.18.28'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.28'
+
+    implementation 'com.google.code.gson:gson:2.10.1'
+
+    implementation 'org.jline:jline-terminal:3.22.0'
+    implementation 'org.jline:jline-reader:3.22.0'
+    implementation 'net.minecrell:terminalconsoleappender:1.3.0'
+
+    implementation 'org.slf4j:slf4j-api:2.0.6'
+    implementation 'jline:jline:2.14.6'
+
+    implementation 'org.apache.logging.log4j:log4j-api:2.19.0'
+    implementation 'org.apache.logging.log4j:log4j-core:2.19.0'
+
+    implementation("com.github.ben-manes.caffeine:caffeine:3.1.6")
+
+    implementation("com.github.ben-manes.caffeine:guava:3.1.6")
+    implementation("com.github.ben-manes.caffeine:jcache:3.1.6")
+
+    implementation 'io.nayuki:qrcodegen:1.8.0'
+
+    implementation fileTree('libs')
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}
+
+jar {
+    from {
+        configurations.runtimeClasspath.collect { it.directory ? it : zipTree(it) }
+    }
+    manifest.attributes.put("Main-Class", "suzaku.Suzaku")
+    archiveName("suzaku.jar")
+    duplicatesStrategy DuplicatesStrategy.EXCLUDE
+}
